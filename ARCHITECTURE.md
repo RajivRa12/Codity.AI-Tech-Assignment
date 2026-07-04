@@ -35,23 +35,6 @@ flowchart TD
     
     Redis -- "3. Consumes task ID" --> CeleryWorker
     CeleryWorker -- "4. Updates status & result" --> DB
-    
-    %% Subgraphs for organization
-    subgraph "Web Layer"
-        Client
-        API
-    end
-    
-    subgraph "Data Layer"
-        DB
-        Redis
-    end
-    
-    subgraph "Execution Layer"
-        CustomWorker
-        CeleryWorker
-        CeleryBeat
-    end
 ```
 
 ### Component Breakdown
