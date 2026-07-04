@@ -2,33 +2,30 @@
 
 The following diagram illustrates the high-level architecture of the Distributed Job Scheduler.
 
-```text
-Client
-  |
-  v
-Django REST API
-  ├── scheduler (Core Config)
-  ├── authentication
-  ├── common
-  ├── projects
-  ├── queues
-  ├── jobs
-  ├── scheduling
-  ├── workers
-  ├── retry
-  └── logs
-  |
-  v
-PostgreSQL (Database)
-  |
-  v
-Redis (Message Broker)
-  |
-  v
-Celery Worker & Custom DB Worker
-  ^
-  |
-Celery Beat (Scheduler)
+```mermaid
+flowchart TD
+    %% Define Node Colors and Styles
+    classDef client fill:#3b82f6,stroke:#1e40af,stroke-width:2px,color:#fff
+    classDef api fill:#10b981,stroke:#047857,stroke-width:2px,color:#fff
+    classDef db fill:#f59e0b,stroke:#b45309,stroke-width:2px,color:#fff
+    classDef broker fill:#ef4444,stroke:#b91c1c,stroke-width:2px,color:#fff
+    classDef worker fill:#8b5cf6,stroke:#5b21b6,stroke-width:2px,color:#fff
+
+    %% Nodes
+    C["React Dashboard Client"]:::client
+    API["Django REST API<br/>(Modular Apps)"]:::api
+    DB[("PostgreSQL<br/>(Normalized Data)")]:::db
+    REDIS[("Redis<br/>(Task Broker)")]:::broker
+    WORKER["Celery Workers<br/>(Concurrency)"]:::worker
+    BEAT["Celery Beat<br/>(Scheduler)"]:::worker
+
+    %% Connections
+    C -->|HTTPS/REST| API
+    API -->|Read/Write Data| DB
+    API -->|Enqueues Tasks| REDIS
+    REDIS -->|Consumes Tasks| WORKER
+    WORKER -->|Updates Status/Logs| DB
+    BEAT -->|Triggers Cron Jobs| REDIS
 ```
 
 ### Component Breakdown
