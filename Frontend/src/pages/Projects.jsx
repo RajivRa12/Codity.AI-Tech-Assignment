@@ -13,7 +13,7 @@ export default function Projects() {
   const { data, isLoading } = useQuery({
     queryKey: ['projects'],
     queryFn: async () => {
-      const res = await api.get('projects/projects/');
+      const res = await api.get('projects/');
       return res.data.results;
     }
   });
@@ -31,7 +31,7 @@ export default function Projects() {
   ];
 
   const handleSubmit = async (formData) => {
-    await api.post('projects/projects/', formData);
+    await api.post('projects/', formData);
   };
 
   return (
